@@ -3,7 +3,7 @@
 ## Execute the Method
 
 1. Open `main.m` MATLAB program
-2. Copy the data files to the [data/](https://github.com/sousarbarb/odometry-calibration/data) folder
+2. Copy the data files to the [data/](https://github.com/sousarbarb/odometry-calibration/tree/main/data) folder
 3. Change the following variables:
    - visualize: false (only shows the maximum errors) / true
    - Dataset.filenames: `[directory/fileID]` (any number of datasets)
@@ -15,7 +15,7 @@
 ## Test Different Kinematic Parameters
 
 1. Open `main_testParameters.m` MATLAB program
-2. Copy the data files to the [data/](https://github.com/sousarbarb/odometry-calibration/data) folder
+2. Copy the data files to the [data/](https://github.com/sousarbarb/odometry-calibration/tree/main/data) folder
 3. Change the following variables:
    - visualize: false (only shows the maximum errors) / true
    - Dataset.filenames: `[directory/fileID]` (any number of datasets)

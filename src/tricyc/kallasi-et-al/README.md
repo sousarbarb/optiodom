@@ -1,7 +1,7 @@
 # Kallasi et al.
 
 1. Open `main.m` MATLAB program
-2. Copy the data files to the [data/](https://github.com/sousarbarb/odometry-calibration/data) folder
+2. Copy the data files to the [data/](https://github.com/sousarbarb/odometry-calibration/tree/main/data) folder
 3. Change the following variables:
    - visualize: false (only shows the maximum errors) / true
    - Dataset.filenames: `[directory/fileID]` (any number of datasets)

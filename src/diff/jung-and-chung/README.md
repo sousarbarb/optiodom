@@ -1,7 +1,7 @@
 # Jung and Chung
 
 1. Open `main.m` MATLAB program
-2. Copy the data files (retrieved when the robot had gone through a squared path) to the [data/](https://github.com/sousarbarb/odometry-calibration/data) folder
+2. Copy the data files (retrieved when the robot had gone through a squared path) to the [data/](https://github.com/sousarbarb/odometry-calibration/tree/main/data) folder
    - N/2 first runs must be relative to the CW (clockwise) direction
    - The other N/2 runs must be relative to the CCW (counterclockwise) direction
 3. Change the following variables:

@@ -25,7 +25,7 @@ This repository implements a novel approach to odometry calibration independent 
 
 - Synchronized odometry and ground-truth data
 - CSV files
-- See examples in the [data/](https://github.com/sousarbarb/odometry-calibration/data) folder
+- See examples in the [data/](https://github.com/sousarbarb/odometry-calibration/tree/main/data) folder
 
 **Metadata file:** `[directory/fileID_metadata.csv]`
 
@@ -69,21 +69,21 @@ odo_tf,[...],   (not required)
    git clone https://github.com/sousarbarb/odometry-calibration.git
    ```
 
-2. Copy the metadata file and experiments data to the [data/](https://github.com/sousarbarb/odometry-calibration/data) folder
+2. Copy the metadata file and experiments data to the [data/](https://github.com/sousarbarb/odometry-calibration/tree/main/data) folder
 
 3. Execute the odometry calibration method (go to the respective `src` folders for further instructions):
 
-   - A Novel Approach for Odometry Calibration on Wheeled Robots: [src](https://github.com/sousarbarb/odometry-calibration/src/sousa-et-al), [wiki](Method)
+   - A Novel Approach for Odometry Calibration on Wheeled Robots: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/sousa-et-al), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Method)
    - Differential drive-only:
-     - Borenstein and Feng - The University of Michigan Benchmark (UMBmark): [src](https://github.com/sousarbarb/odometry-calibration/src/diff/umbmark), [wiki](UMBmark), doi: [10.1109/70.544770](https://doi.org/10.1109/70.544770)
-     - Jung and Chung: [src](https://github.com/sousarbarb/odometry-calibration/src/diff/jung-and-chung), [wiki](Jung and Chung), doi: [10.1109/10.1109/ICRA.2012.6224660](https://doi.org/10.1109/10.1109/ICRA.2012.6224660)
-     - Ivanjko et al.: [src](https://github.com/sousarbarb/odometry-calibration/src/diff/ivanjko-et-al), [wiki](Ivanjko et al), link: [https://www.researchgate.net/publication/268411270](https://www.researchgate.net/publication/268411270)
+     - Borenstein and Feng - The University of Michigan Benchmark (UMBmark): [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/diff/umbmark), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/UMBmark), doi: [10.1109/70.544770](https://doi.org/10.1109/70.544770)
+     - Jung and Chung: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/diff/jung-and-chung), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Jung-and-Chung), doi: [10.1109/ICRA.2012.6224660](https://doi.org/10.1109/ICRA.2012.6224660)
+     - Ivanjko et al.: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/diff/ivanjko-et-al), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Ivanjko-et-al), link: [https://www.researchgate.net/publication/268411270](https://www.researchgate.net/publication/268411270)
    - Ackerman/tricyle-only:
-     - Kallasi et al.: [src](https://github.com/sousarbarb/odometry-calibration/src/tricyc/kallasi-et-al), [wiki](Kallasi et al), doi: [10.1016/j.robot.2017.04.019](https://doi.org/10.1016/j.robot.2017.04.019)
+     - Kallasi et al.: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/tricyc/kallasi-et-al), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Kallasi-et-al), doi: [10.1016/j.robot.2017.04.019](https://doi.org/10.1016/j.robot.2017.04.019)
    - Omnidirectional-only:
-     - Lin et al.: [src-omni3](https://github.com/sousarbarb/odometry-calibration/src/omni3/lin-et-al) / [src-omni4](https://github.com/sousarbarb/odometry-calibration/src/omni4/lin-et-al), [wiki](Lin et al), doi: [10.1109/ICCSE.2019.8845402](https://doi.org/10.1109/ICCSE.2019.8845402)
+     - Lin et al.: [src-omni3](https://github.com/sousarbarb/odometry-calibration/tree/main/src/omni3/lin-et-al) / [src-omni4](https://github.com/sousarbarb/odometry-calibration/tree/main/src/omni4/lin-et-al), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Lin-et-al), doi: [10.1109/ICCSE.2019.8845402](https://doi.org/10.1109/ICCSE.2019.8845402)
 
-See [Documentation](Home) for further details.
+See [Documentation](https://github.com/sousarbarb/odometry-calibration/wiki) for further details.
 
 ## Usage
 
