@@ -1,0 +1,13 @@
+type,diff,
+ngear,43.7,
+encRes,64,
+Li,0.2,
+Di,0.084,0.084
+Thi,,
+N,2,
+L,,
+imarkers,3,2
+gt_ti,2.8,3.67
+gt_tf,84.61,104.1
+odo_ti,0,0
+odo_tf,80,98.35

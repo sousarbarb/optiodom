@@ -1,0 +1,13 @@
+type,tricyc,
+ngear,1,
+encRes,1600,
+Li,0.15,
+Di,0.065,
+Thi,0,
+N,2,
+L,,
+imarkers,5,1
+gt_ti,4.73,6.87
+gt_tf,122.2,128.1
+odo_ti,0,0
+odo_tf,93.9499999999998,97.9499999999998
