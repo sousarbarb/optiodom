@@ -1,0 +1,4 @@
+*.txt
+src/robot*
+data/omni3_*
+data/tricyc_*
