@@ -1,4 +1,4 @@
-# A Novel Approach for Odometry Calibration on Wheeled Robots: GitHub Repository
+# OptiOdom: An Steering-Agnostic Approach for Odometry Calibration of Wheeled Mobile Robots - GitHub Repository
 
 - [About the Project](#about-the-project)
 - [Getting Started](#getting-started)
@@ -73,7 +73,7 @@ odo_tf,[...],   (not required)
 
 3. Execute the odometry calibration method (go to the respective `src` folders for further instructions):
 
-   - A Novel Approach for Odometry Calibration on Wheeled Robots: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/sousa-et-al), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Method)
+   - OptiOdom: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/sousa-et-al), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Method)
    - Differential drive-only:
      - Borenstein and Feng - The University of Michigan Benchmark (UMBmark): [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/diff/umbmark), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/UMBmark), doi: [10.1109/70.544770](https://doi.org/10.1109/70.544770)
      - Jung and Chung: [src](https://github.com/sousarbarb/odometry-calibration/tree/main/src/diff/jung-and-chung), [wiki](https://github.com/sousarbarb/odometry-calibration/wiki/Jung-and-Chung), doi: [10.1109/ICRA.2012.6224660](https://doi.org/10.1109/ICRA.2012.6224660)
