@@ -129,3 +129,7 @@ Project Link: <https://github.com/sousarbarb/odometry-calibration>
 - [CRIIS - Centre for Robotics in Industry and Intelligent Systems](https://criis.inesctec.pt/) from [INESC TEC - Institute for Systems and Computer Engineering, Technology and Science](https://www.inesctec.pt/en)
 - [Faculty of Engineering, University of Porto (FEUP)](https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL)
 - [Universidade de Trás-os-Montes e Alto Douro (UTAD)](https://www.utad.pt/en/)
+
+## Funding
+
+This work is financed by the ERDF - European Regional Development Fund through the Operational Programme for Competitiveness and Internationalisation - COMPETE 2020 Programme, and by National Funds through the Portuguese funding agency, FCT - Fundação para a Ciência e a Tecnologia, within project SAICTPAC/0034/2015- POCI-01-0145-FEDER-016418. This work is also financed by the ERDF - European Regional Development Fund through the Operational Programme for Competitiveness and Internationalisation - COMPETE 2020 Programme within project POCI-01-0145-FEDER-006961, and by National Funds through the FCT - Fundação para a Ciência e a Tecnologia (Portuguese Foundation for Science and Technology) as part of project  UID/EEA/50014/2013.
