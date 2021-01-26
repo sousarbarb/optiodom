@@ -10,6 +10,7 @@
 - [License](#license)
 - [Contacts](#contacts)
 - [Acknowledgements](#acknowledgements)
+- [Funding](#funding)
 
 ## About the Project
 
