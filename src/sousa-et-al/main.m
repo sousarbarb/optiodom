@@ -120,7 +120,7 @@ Method.sampleDist = [0.5];
 % - rprop parameters
 [Method] = setRpropParameters(Method,RobotParam);
 % - exclude worse runs
-Method.options.excludeRuns = [30];
+Method.options.excludeRuns = [];
 % Method. ...
 
 

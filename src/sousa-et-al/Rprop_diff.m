@@ -4,7 +4,7 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
   n  = RobotParam.ngear;
   Ce = RobotParam.encRes;
   L  = RobotParam.L;
-  D  = RobotParam.D;
+  D  = sum(RobotParam.D)/length(RobotParam.D);
 
   % Initialization: Input data
   Nsim = length(XGt);
@@ -38,6 +38,7 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
 
   % Initialization: Procedure parameters
   %XOdoDebug = XGt;
+  nWh = 1;
   XOdoF = zeros(Nsim,3);
   cost    = zeros(maxiter,1);
   costSim = zeros(maxiter,1);
@@ -61,8 +62,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
       historyRobotParam(iteration,:) = [ L , D ];
 
       % Parameters initialization
-      derivParam = zeros(Nsim,6);  % [ dx/dL dx/dD(1) dx/dD(2) dy/dL dy/dD(1) dy/dD(2) ]
-      costDeriv  = zeros(1,3);     % [ dE/dL dE/dD(1) dE/dD(2) ] <=> [ dE/dL dE/dD_R dE/dD_L ]
+      derivParam = zeros(Nsim,(nWh+nL)*2);  % [ dx/dL dx/dD dy/dL dy/dD ]
+      costDeriv  = zeros(1,nWh+nL);         % [ dE/dL dE/dD ]
       
       isegAll = 1;
 
@@ -75,8 +76,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
         
         for k=2:itf(i)
           % Common variables
-          deltaD  = ( D(1)*Odo{i}(k,1) + D(2)*Odo{i}(k,2) ) * a_pi_nCe / 2;
-          deltaTH = ( D(1)*Odo{i}(k,1) - D(2)*Odo{i}(k,2) ) * a_pi_nCe / L;
+          deltaD  = ( D*Odo{i}(k,1) + D*Odo{i}(k,2) ) * a_pi_nCe / 2;
+          deltaTH = ( D*Odo{i}(k,1) - D*Odo{i}(k,2) ) * a_pi_nCe / L;
           a_sinThDth2 = sin( XOdoF(i,3) + deltaTH/2 );
           a_cosThDth2 = cos( XOdoF(i,3) + deltaTH/2 );
 
@@ -88,15 +89,13 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
           derivParam(i,1) = derivParam(i,1) + deltaD * a_sinThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
           derivParam(i,2) = derivParam(i,2)               + ...
                             Odo{i}(k,1) * a_cosThDth2 / 2 - ...
-                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,3) = derivParam(i,3)               + ...
+                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_cosThDth2 / 2 + ...
                             deltaD * a_sinThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
-          derivParam(i,4) = derivParam(i,4) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
-          derivParam(i,5) = derivParam(i,5)               + ...
+          derivParam(i,3) = derivParam(i,3) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
+          derivParam(i,4) = derivParam(i,4)               + ...
                             Odo{i}(k,1) * a_sinThDth2 / 2 + ...
-                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,6) = derivParam(i,6)               + ...
+                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_sinThDth2 / 2 - ...
                             deltaD * a_cosThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
 
@@ -113,15 +112,12 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
             a_derivParam = zeros(1,6);
             a_derivParam(1) = derivParam(i,1) / L;
             a_derivParam(2) = derivParam(i,2) * a_pi_nCe;
-            a_derivParam(3) = derivParam(i,3) * a_pi_nCe;
-            a_derivParam(4) = derivParam(i,4) / L;
-            a_derivParam(5) = derivParam(i,5) * a_pi_nCe;
-            a_derivParam(6) = derivParam(i,6) * a_pi_nCe;
+            a_derivParam(3) = derivParam(i,3) / L;
+            a_derivParam(4) = derivParam(i,4) * a_pi_nCe;
 
             % Computation of the cost derivatives: [ dE/dL dE/dD(1) dE/dD(2) ]
-            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
-            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(5);
-            costDeriv(3) = costDeriv(3) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(3) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(6);
+            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(3);
+            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
 
             % Cost function
             costSim(iteration,isegAll) = ( a_XOdoF(1) - XGt{i}(k,1) )^2 + ( a_XOdoF(2) - XGt{i}(k,2) )^2;
@@ -188,8 +184,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
       historyRobotParam(iteration,:) = [ L , D ];
 
       % Parameters initialization
-      derivParam = zeros(Nsim,6);  % [ dx/dL dx/dD(1) dx/dD(2) dy/dL dy/dD(1) dy/dD(2) ]
-      costDeriv  = zeros(1,3);     % [ dE/dL dE/dD(1) dE/dD(2) ] <=> [ dE/dL dE/dD_R dE/dD_L ]
+      derivParam = zeros(Nsim,(nWh+nL)*2);  % [ dx/dL dx/dD dy/dL dy/dD ]
+      costDeriv  = zeros(1,nWh+nL);         % [ dE/dL dE/dD ]
       
       isegAll = 1;
 
@@ -202,8 +198,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
         
         for k=2:itf(i)
           % Common variables
-          deltaD  = ( D(1)*Odo{i}(k,1) + D(2)*Odo{i}(k,2) ) * a_pi_nCe / 2;
-          deltaTH = ( D(1)*Odo{i}(k,1) - D(2)*Odo{i}(k,2) ) * a_pi_nCe / L;
+          deltaD  = ( D*Odo{i}(k,1) + D*Odo{i}(k,2) ) * a_pi_nCe / 2;
+          deltaTH = ( D*Odo{i}(k,1) - D*Odo{i}(k,2) ) * a_pi_nCe / L;
           a_sinThDth2 = sin( XOdoF(i,3) + deltaTH/2 );
           a_cosThDth2 = cos( XOdoF(i,3) + deltaTH/2 );
 
@@ -215,15 +211,13 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
           derivParam(i,1) = derivParam(i,1) + deltaD * a_sinThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
           derivParam(i,2) = derivParam(i,2)               + ...
                             Odo{i}(k,1) * a_cosThDth2 / 2 - ...
-                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,3) = derivParam(i,3)               + ...
+                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_cosThDth2 / 2 + ...
                             deltaD * a_sinThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
-          derivParam(i,4) = derivParam(i,4) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
-          derivParam(i,5) = derivParam(i,5)               + ...
+          derivParam(i,3) = derivParam(i,3) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
+          derivParam(i,4) = derivParam(i,4)               + ...
                             Odo{i}(k,1) * a_sinThDth2 / 2 + ...
-                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,6) = derivParam(i,6)               + ...
+                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_sinThDth2 / 2 - ...
                             deltaD * a_cosThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
 
@@ -240,15 +234,12 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
             a_derivParam = zeros(1,6);
             a_derivParam(1) = derivParam(i,1) / L;
             a_derivParam(2) = derivParam(i,2) * a_pi_nCe;
-            a_derivParam(3) = derivParam(i,3) * a_pi_nCe;
-            a_derivParam(4) = derivParam(i,4) / L;
-            a_derivParam(5) = derivParam(i,5) * a_pi_nCe;
-            a_derivParam(6) = derivParam(i,6) * a_pi_nCe;
+            a_derivParam(3) = derivParam(i,3) / L;
+            a_derivParam(4) = derivParam(i,4) * a_pi_nCe;
 
             % Computation of the cost derivatives: [ dE/dL dE/dD(1) dE/dD(2) ]
-            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
-            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(5);
-            costDeriv(3) = costDeriv(3) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(3) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(6);
+            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(3);
+            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
 
             % Cost function
             costSim(iteration,isegAll) = ( a_XOdoF(1) - XGt{i}(k,1) )^2 + ( a_XOdoF(2) - XGt{i}(k,2) )^2;
@@ -312,8 +303,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
       historyRobotParam(iteration,:) = [ L , D ];
 
       % Parameters initialization
-      derivParam = zeros(Nsim,6);  % [ dx/dL dx/dD(1) dx/dD(2) dy/dL dy/dD(1) dy/dD(2) ]
-      costDeriv  = zeros(1,3);     % [ dE/dL dE/dD(1) dE/dD(2) ] <=> [ dE/dL dE/dD_R dE/dD_L ]
+      derivParam = zeros(Nsim,(nWh+nL)*2);  % [ dx/dL dx/dD dy/dL dy/dD ]
+      costDeriv  = zeros(1,nWh+nL);         % [ dE/dL dE/dD ]
       
       isegAll = 1;
 
@@ -326,8 +317,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
         
         for k=2:itf(i)
           % Common variables
-          deltaD  = ( D(1)*Odo{i}(k,1) + D(2)*Odo{i}(k,2) ) * a_pi_nCe / 2;
-          deltaTH = ( D(1)*Odo{i}(k,1) - D(2)*Odo{i}(k,2) ) * a_pi_nCe / L;
+          deltaD  = ( D*Odo{i}(k,1) + D*Odo{i}(k,2) ) * a_pi_nCe / 2;
+          deltaTH = ( D*Odo{i}(k,1) - D*Odo{i}(k,2) ) * a_pi_nCe / L;
           a_sinThDth2 = sin( XOdoF(i,3) + deltaTH/2 );
           a_cosThDth2 = cos( XOdoF(i,3) + deltaTH/2 );
 
@@ -339,15 +330,13 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
           derivParam(i,1) = derivParam(i,1) + deltaD * a_sinThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
           derivParam(i,2) = derivParam(i,2)               + ...
                             Odo{i}(k,1) * a_cosThDth2 / 2 - ...
-                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,3) = derivParam(i,3)               + ...
+                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_cosThDth2 / 2 + ...
                             deltaD * a_sinThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
-          derivParam(i,4) = derivParam(i,4) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
-          derivParam(i,5) = derivParam(i,5)               + ...
+          derivParam(i,3) = derivParam(i,3) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
+          derivParam(i,4) = derivParam(i,4)               + ...
                             Odo{i}(k,1) * a_sinThDth2 / 2 + ...
-                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,6) = derivParam(i,6)               + ...
+                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_sinThDth2 / 2 - ...
                             deltaD * a_cosThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
 
@@ -364,15 +353,12 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
             a_derivParam = zeros(1,6);
             a_derivParam(1) = derivParam(i,1) / L;
             a_derivParam(2) = derivParam(i,2) * a_pi_nCe;
-            a_derivParam(3) = derivParam(i,3) * a_pi_nCe;
-            a_derivParam(4) = derivParam(i,4) / L;
-            a_derivParam(5) = derivParam(i,5) * a_pi_nCe;
-            a_derivParam(6) = derivParam(i,6) * a_pi_nCe;
+            a_derivParam(3) = derivParam(i,3) / L;
+            a_derivParam(4) = derivParam(i,4) * a_pi_nCe;
 
             % Computation of the cost derivatives: [ dE/dL dE/dD(1) dE/dD(2) ]
-            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
-            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(5);
-            costDeriv(3) = costDeriv(3) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(3) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(6);
+            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(3);
+            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
 
             % Cost function
             costSim(iteration,isegAll) = ( a_XOdoF(1) - XGt{i}(k,1) )^2 + ( a_XOdoF(2) - XGt{i}(k,2) )^2;
@@ -447,8 +433,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
       historyRobotParam(iteration,:) = [ L , D ];
 
       % Parameters initialization
-      derivParam = zeros(Nsim,6);  % [ dx/dL dx/dD(1) dx/dD(2) dy/dL dy/dD(1) dy/dD(2) ]
-      costDeriv  = zeros(1,3);     % [ dE/dL dE/dD(1) dE/dD(2) ] <=> [ dE/dL dE/dD_R dE/dD_L ]
+      derivParam = zeros(Nsim,(nWh+nL)*2);  % [ dx/dL dx/dD dy/dL dy/dD ]
+      costDeriv  = zeros(1,nWh+nL);         % [ dE/dL dE/dD ]
       
       isegAll = 1;
 
@@ -461,8 +447,8 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
         
         for k=2:itf(i)
           % Common variables
-          deltaD  = ( D(1)*Odo{i}(k,1) + D(2)*Odo{i}(k,2) ) * a_pi_nCe / 2;
-          deltaTH = ( D(1)*Odo{i}(k,1) - D(2)*Odo{i}(k,2) ) * a_pi_nCe / L;
+          deltaD  = ( D*Odo{i}(k,1) + D*Odo{i}(k,2) ) * a_pi_nCe / 2;
+          deltaTH = ( D*Odo{i}(k,1) - D*Odo{i}(k,2) ) * a_pi_nCe / L;
           a_sinThDth2 = sin( XOdoF(i,3) + deltaTH/2 );
           a_cosThDth2 = cos( XOdoF(i,3) + deltaTH/2 );
 
@@ -474,15 +460,13 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
           derivParam(i,1) = derivParam(i,1) + deltaD * a_sinThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
           derivParam(i,2) = derivParam(i,2)               + ...
                             Odo{i}(k,1) * a_cosThDth2 / 2 - ...
-                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,3) = derivParam(i,3)               + ...
+                            deltaD * a_sinThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_cosThDth2 / 2 + ...
                             deltaD * a_sinThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
-          derivParam(i,4) = derivParam(i,4) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
-          derivParam(i,5) = derivParam(i,5)               + ...
+          derivParam(i,3) = derivParam(i,3) - deltaD * a_cosThDth2 * ( XOdoF(i,3) - XGt{i}(1,3) + deltaTH/2 );
+          derivParam(i,4) = derivParam(i,4)               + ...
                             Odo{i}(k,1) * a_sinThDth2 / 2 + ...
-                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L;
-          derivParam(i,6) = derivParam(i,6)               + ...
+                            deltaD * a_cosThDth2 * ( a_Wh{i}(k,1) + Odo{i}(k,1)/2 ) / L + ...
                             Odo{i}(k,2) * a_sinThDth2 / 2 - ...
                             deltaD * a_cosThDth2 * ( a_Wh{i}(k,2) + Odo{i}(k,2)/2 ) / L;
 
@@ -499,15 +483,12 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
             a_derivParam = zeros(1,6);
             a_derivParam(1) = derivParam(i,1) / L;
             a_derivParam(2) = derivParam(i,2) * a_pi_nCe;
-            a_derivParam(3) = derivParam(i,3) * a_pi_nCe;
-            a_derivParam(4) = derivParam(i,4) / L;
-            a_derivParam(5) = derivParam(i,5) * a_pi_nCe;
-            a_derivParam(6) = derivParam(i,6) * a_pi_nCe;
+            a_derivParam(3) = derivParam(i,3) / L;
+            a_derivParam(4) = derivParam(i,4) * a_pi_nCe;
 
             % Computation of the cost derivatives: [ dE/dL dE/dD(1) dE/dD(2) ]
-            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
-            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(5);
-            costDeriv(3) = costDeriv(3) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(3) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(6);
+            costDeriv(1) = costDeriv(1) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(1) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(3);
+            costDeriv(2) = costDeriv(2) + 2 * ( a_XOdoF(1) - XGt{i}(k,1) ) * a_derivParam(2) + 2 * ( a_XOdoF(2) - XGt{i}(k,2) ) * a_derivParam(4);
 
             % Cost function
             costSim(iteration,isegAll) = ( a_XOdoF(1) - XGt{i}(k,1) )^2 + ( a_XOdoF(2) - XGt{i}(k,2) )^2;
@@ -562,10 +543,11 @@ function [RobotEstParam,cost,costSim,numIterations,historyRobotParam] = Rprop_di
       toc
     end
   end
+  [~,nWh] = size(Odo{1});
 
   % Update robot parameters estimation
   L = newL;
-  D = newD;
+  D = newD * ones(1,nWh);
 
   % Output arguments
   cost    = cost(1:iteration);
