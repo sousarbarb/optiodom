@@ -129,7 +129,6 @@ Project Link: <https://github.com/sousarbarb/odometry-calibration>
 
 - [CRIIS - Centre for Robotics in Industry and Intelligent Systems](https://criis.inesctec.pt/) from [INESC TEC - Institute for Systems and Computer Engineering, Technology and Science](https://www.inesctec.pt/en)
 - [Faculty of Engineering, University of Porto (FEUP)](https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL)
-- [Universidade de Trás-os-Montes e Alto Douro (UTAD)](https://www.utad.pt/en/)
 
 ## Funding
 
