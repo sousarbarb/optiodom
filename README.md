@@ -1,4 +1,4 @@
-# OptiOdom: An Steering-Agnostic Approach for Odometry Calibration of Wheeled Mobile Robots - GitHub Repository
+# OptiOdom: A Generic Approach for Odometry Calibration of Wheeled Mobile Robots - GitHub Repository
 
 - [About the Project](#about-the-project)
 - [Getting Started](#getting-started)
