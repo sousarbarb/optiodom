@@ -132,6 +132,10 @@ Project Link: <https://github.com/sousarbarb/odometry-calibration>
 
 Sousa, R.B., Petry, M.R., Costa, P.G. _et al._ OptiOdom: a Generic Approach for Odometry Calibration of Wheeled Mobile Robots. _J Intell Robot Syst_ **105**, 39 (2022). https://doi.org/10.1007/s10846-022-01630-3 ([preprint](https://dx.doi.org/10.13140/RG.2.2.22803.35364))
 
+Sousa, R.B.: Odometry and Extrinsic Sensor Calibration on Mobile Robots. Master's Thesis, Faculty of Engineering of the University of Porto (FEUP), INESC TEC - Institute for Systemsand Computer Engineering, Technology and Science, Porto, Portugal. https://doi.org/10.13140/RG.2.2.27052.28802 (2020)
+
+R. B. Sousa, M. R. Petry and A. P. Moreira, "Evolution of Odometry Calibration Methods for Ground Mobile Robots," _2020 IEEE International Conference on Autonomous Robot Systems and Competitions (ICARSC)_, 2020, pp. 294-299, doi: [10.1109/ICARSC49921.2020.9096154](https://doi.org/10.1109/ICARSC49921.2020.9096154) ([presentation](https://dx.doi.org/10.13140/RG.2.2.14990.48966))
+
 ## Acknowledgements
 
 - [CRIIS - Centre for Robotics in Industry and Intelligent Systems](https://criis.inesctec.pt/) from [INESC TEC - Institute for Systems and Computer Engineering, Technology and Science](https://www.inesctec.pt/en)
