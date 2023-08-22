@@ -51,15 +51,15 @@ odo_tf,[...],   (not required)
 
 ```sh
 # Differential drive
-[ time (s) ] , [ xgt (m) ] , [ ygt (m) ] , [ thgt (m) ] , [ odoR (ppr) , odoL (ppr) ],
+[ time (s) ] , [ xgt (m) ] , [ ygt (m) ] , [ thgt (rad) ] , [ odoR (tcks/cycle) , odoL (tcks/cycle) ],
 ...
 
 # Tricycle
-[ time (s) ] , [ xgt (m) ] , [ ygt (m) ] , [ thgt (m) ] , [ odoWh (ppr) , ThWh (rad) ],
+[ time (s) ] , [ xgt (m) ] , [ ygt (m) ] , [ thgt (rad) ] , [ odoWh (tcks/cycle) , ThWh (tcks/cycle) ],
 ...
 
 # Omnidirectional
-[ time (s) ] , [ xgt (m) ] , [ ygt (m) ] , [ thgt (m) ] , [ odo1 (ppr) , ..., odoM (ppr) ],
+[ time (s) ] , [ xgt (m) ] , [ ygt (m) ] , [ thgt (rad) ] , [ odo1 (tcks/cycle) , ..., odoM (tcks/cycle) ],
 ...
 ```
 
