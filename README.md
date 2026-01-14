@@ -126,15 +126,17 @@ If you have any questions or you want to know more about the work developed by u
 - Professor António Paulo Moreira: amoreira@fe.up.pt
 - Professor Paulo Costa: paco@fe.up.pt
 
-Project Link: <https://github.com/sousarbarb/odometry-calibration>
+Project Link: <https://github.com/sousarbarb/optiodom>
 
 ## References
 
-Sousa, R.B., Petry, M.R., Costa, P.G. _et al._ OptiOdom: a Generic Approach for Odometry Calibration of Wheeled Mobile Robots. _J Intell Robot Syst_ **105**, 39 (2022). https://doi.org/10.1007/s10846-022-01630-3 ([preprint](https://dx.doi.org/10.13140/RG.2.2.22803.35364))
+Sousa, R.B., Petry, M.R., Costa, P.G., and Moreira, A.P. (2022). OptiOdom: a Generic Approach for Odometry Calibration of Wheeled Mobile Robots. _J Intell Robot Syst_ **105**, 39. [[doi](https://doi.org/10.1007/s10846-022-01630-3)], [[preprint](https://doi.org/10.13140/RG.2.2.22803.35364)]
 
-Sousa, R.B.: Odometry and Extrinsic Sensor Calibration on Mobile Robots. Master's Thesis, Faculty of Engineering of the University of Porto (FEUP), INESC TEC - Institute for Systemsand Computer Engineering, Technology and Science, Porto, Portugal. https://doi.org/10.13140/RG.2.2.27052.28802 (2020)
+Sousa, R.B., Petry, M.R., and Moreira, A.P. (2021). Extrinsic Sensor Calibration Methods for Mobile Robots: A Short Review. In: Gonçalves, J.A., Braz-César, M., Coelho, J.P. (eds) _CONTROLO 2020. CONTROLO 2020. Lecture Notes in Electrical Engineering_, vol. 695. [[doi](https://doi.org/10.1007/978-3-030-58653-9_54)], [[presentation](https://doi.org/10.13140/RG.2.2.25056.81928)]
 
-R. B. Sousa, M. R. Petry and A. P. Moreira, "Evolution of Odometry Calibration Methods for Ground Mobile Robots," _2020 IEEE International Conference on Autonomous Robot Systems and Competitions (ICARSC)_, 2020, pp. 294-299, doi: [10.1109/ICARSC49921.2020.9096154](https://doi.org/10.1109/ICARSC49921.2020.9096154) ([presentation](https://dx.doi.org/10.13140/RG.2.2.14990.48966))
+Sousa, R.B. (2020). Odometry and Extrinsic Sensor Calibration on Mobile Robots. Master's Thesis, Faculty of Engineering of the University of Porto (FEUP), INESC TEC - Institute for Systems and Computer Engineering, Technology and Science, Porto, Portugal. [[url](https://doi.org/10.13140/RG.2.2.27052.28802)]
+
+Sousa, R.B., Petry, M.R., and Moreira, A.P. (2020). Evolution of Odometry Calibration Methods for Ground Mobile Robots. In: _2020 IEEE International Conference on Autonomous Robot Systems and Competitions (ICARSC)_, pp. 294-299, Ponta Delgada, Portugal. [[doi](https://doi.org/10.1109/ICARSC49921.2020.9096154)], [[presentation](https://doi.org/10.13140/RG.2.2.14990.48966)]
 
 ## Acknowledgements
 
